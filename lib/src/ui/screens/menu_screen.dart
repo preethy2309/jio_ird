@@ -161,7 +161,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 width: 240,
                 child: DishList(dishes: filteredDishes),
               ),
-              Expanded(
+              Spacer(),
+              SizedBox(
+                width: 432,
                 child: DishDetail(
                   dish:
                       (focusedDish >= 0 && focusedDish < filteredDishes.length)
@@ -188,6 +190,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               child: SubCategoriesWithImage(
                   subCategories: selectedCat.subCategories!),
             ),
+            Spacer(),
             if (filteredDishes.isEmpty)
               const Expanded(
                 child: Center(
@@ -198,7 +201,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 ),
               )
             else
-              Expanded(
+              SizedBox(
+                width: 432,
                 child: DishDetail(
                   dish:
                       (focusedDish >= 0 && focusedDish < filteredDishes.length)
@@ -213,9 +217,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
           // --- CASE 3: SubCategory + Dish List + Dish Detail ---
           else if (hasSubCategories(ref) && showSubCategories) ...[
             SizedBox(
-              width: 240,
-              child:
-                  SubCategoryList(subCategories: selectedCat.subCategories!),
+              width: 330,
+              child: SubCategoryList(subCategories: selectedCat.subCategories!),
             ),
             const SizedBox(width: 16),
             if (filteredDishes.isEmpty)
@@ -228,18 +231,22 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 ),
               )
             else ...[
+              // SizedBox(
+              //   width: 280,
+              //   child: DishList(dishes: filteredDishes),
+              // ),
+              Spacer(),
               SizedBox(
-                width: 280,
-                child: DishList(dishes: filteredDishes),
-              ),
-              Expanded(
+                width: 432,
                 child: DishDetail(
                   dish:
                       (focusedDish >= 0 && focusedDish < filteredDishes.length)
                           ? filteredDishes[focusedDish]
                           : filteredDishes.first,
                   categoryName: selectedCat
-                          .subCategories![focusedSubCategory].categoryName ??
+                          .subCategories![
+                              focusedSubCategory >= 0 ? focusedSubCategory : 0]
+                          .categoryName ??
                       '',
                   itemCount: filteredDishes.length,
                 ),
@@ -263,7 +270,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 width: 280,
                 child: DishList(dishes: filteredDishes),
               ),
-              Expanded(
+              Spacer(),
+              SizedBox(
+                width: 432,
                 child: DishDetail(
                   dish:
                       (focusedDish >= 0 && focusedDish < filteredDishes.length)

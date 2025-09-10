@@ -22,6 +22,7 @@ class JioIRDApp extends ConsumerWidget {
           secondary: focusTheme.unfocusedColor,
           onPrimary: focusTheme.focusedTextColor,
           onSecondary: focusTheme.unfocusedTextColor,
+          tertiary: focusTheme.titleColor,
         ),
         scaffoldBackgroundColor: focusTheme.unfocusedColor.withOpacity(0.9),
         textTheme: TextTheme(

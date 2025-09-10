@@ -50,7 +50,7 @@ class _CartButtonState extends ConsumerState<CartButton> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     SvgPicture.asset(
-                      'assets/icons/ic_cart_icon.svg',
+                      'jio_ird/assets/images/ic_cart.svg',
                       width: 20,
                       height: 20,
                       fit: BoxFit.cover,

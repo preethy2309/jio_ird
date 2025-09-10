@@ -236,10 +236,14 @@ class _DishListState extends ConsumerState<DishList> {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white70,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            foregroundColor:
+                                Theme.of(context).colorScheme.onPrimary,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 12, vertical: 6),
-                            textStyle: const TextStyle(fontSize: 14),
+                            textStyle: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.bold),
                           ),
                           child: const Text("Add to Cart"),
                         )

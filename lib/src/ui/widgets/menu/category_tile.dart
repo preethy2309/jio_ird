@@ -61,9 +61,15 @@ class CategoryTile extends ConsumerWidget {
           color: isFocused
               ? Theme.of(context).colorScheme.primary
               : isSelected
-                  ? Colors.white70
-                  : Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(14),
+              ? Colors.white70
+              : Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(8),
+          border: isFocused
+              ? Border.all(
+            color: Theme.of(context).colorScheme.secondary,
+            width: 2,
+          )
+              : null,
         ),
         child: Text(
           title,

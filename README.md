@@ -28,7 +28,7 @@ In your `pubspec.yaml`, add:
 ```yaml
 dependencies:
   jio_ird:
-  path: packages/jio_ird
+  path: jio_ird
 
   assets:
     - jio_ird/assets/images/
@@ -74,6 +74,7 @@ class MyDemoApp extends StatelessWidget {
           unfocusedColor: Color(0xFF430B42),
           focusedTextColor: Color(0xFF430B42),
           unfocusedTextColor: Colors.amber,
+          titleColor : Colors.white,
         ),
         baseUrl: "kBaseUrl",
         accessToken: "YOUR_ACCESS_TOKEN",

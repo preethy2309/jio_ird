@@ -43,7 +43,6 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
           itemBuilder: (context, index) {
             final isSelected = index == selectedSub;
             final isFocused = index == focusedIndex;
-            print("Preethy $isSelected $isFocused");
 
             final focusNode = ref.watch(subCategoryFocusNodeProvider(index));
 
@@ -63,8 +62,8 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
                 }
               },
               onFocusChange: (hasFocus) {
-                  ref.read(focusedSubCategoryProvider.notifier).state = index;
                   if (hasFocus) {
+                    ref.read(focusedSubCategoryProvider.notifier).state = index;
                     ref.read(selectedSubCategoryProvider.notifier).state = index;
                     ref.read(selectedDishProvider.notifier).state = -1;
                     ref.read(focusedDishProvider.notifier).state = -1;

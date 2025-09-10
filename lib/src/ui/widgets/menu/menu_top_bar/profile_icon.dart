@@ -15,7 +15,6 @@ class _ProfileIconState extends ConsumerState<ProfileIcon> {
   @override
   Widget build(BuildContext context) {
     final logo = ref.watch(resolvedHotelLogoProvider);
-    debugPrint("Preethy $logo");
 
     return InkWell(
       onTap: _goToProfile,

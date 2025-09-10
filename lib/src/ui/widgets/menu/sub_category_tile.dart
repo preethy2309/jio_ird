@@ -92,33 +92,17 @@ class SubCategoryTile extends ConsumerWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
+            const SizedBox(width: 8),
+            Icon(
+              Icons.arrow_forward_ios_rounded,
+              size: 16,
+              color: isFocused
+                  ? Theme.of(context).colorScheme.primary
+                  : Colors.white70,
+            ),
           ],
         ),
       ),
-      // Container(
-      //   alignment: Alignment.centerLeft,
-      //   height: 36,
-      //   margin: const EdgeInsets.all(2),
-      //   padding: const EdgeInsets.symmetric(horizontal: 12),
-      //   decoration: BoxDecoration(
-      //     color: isFocused
-      //         ? Theme.of(context).colorScheme.primary
-      //         : isSelected
-      //         ? Colors.white70
-      //         : Theme.of(context).colorScheme.secondary,
-      //     borderRadius: BorderRadius.circular(14),
-      //   ),
-      //   child: Text(
-      //     title,
-      //     style: TextStyle(
-      //       color: isFocused || isSelected
-      //           ? Theme.of(context).colorScheme.onPrimary
-      //           : Theme.of(context).colorScheme.onSecondary,
-      //       fontSize: 16,
-      //       fontWeight: FontWeight.bold,
-      //     ),
-      //   ),
-      // ),
     );
   }
 }
