@@ -153,11 +153,16 @@ class _DishListState extends ConsumerState<DishList> {
 
               if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
                 if (isFocused) {
-                  if (minusNode.hasFocus || quantity == 0) {
+                  if (minusNode.hasFocus) {
                     ref
                         .read(cookingInstructionFocusNodeProvider)
                         .requestFocus();
                     return KeyEventResult.handled;
+                  } else if (quantity == 0) {
+                    ref
+                        .read(vegToggleFocusNodeProvider)
+                        .requestFocus();
+                    ref.read(focusedDishProvider.notifier).state = 0;
                   } else {
                     Future.microtask(() {
                       minusNode.requestFocus();

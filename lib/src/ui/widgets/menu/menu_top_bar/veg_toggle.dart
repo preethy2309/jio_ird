@@ -50,7 +50,9 @@ class _VegToggleState extends ConsumerState<VegToggle> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
           decoration: BoxDecoration(
-            color: toggleFocused ? Theme.of(context).colorScheme.primary : Colors.transparent,
+            color: toggleFocused
+                ? Theme.of(context).colorScheme.primary
+                : Colors.transparent,
             borderRadius: BorderRadius.circular(26),
           ),
           child: SizedBox(
