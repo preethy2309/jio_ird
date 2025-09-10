@@ -36,6 +36,26 @@ class _CategoryListState extends ConsumerState<CategoryList> {
             setState(() => focusedIndex = -1);
           }
         },
+        onKeyEvent: (node, event) {
+          if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+          if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+            if (focusedIndex > 0) {
+              final prevNode = ref.read(categoryFocusNodeProvider(focusedIndex - 1));
+              Future.microtask(() => prevNode.requestFocus());
+              return KeyEventResult.handled;
+            }
+          }
+
+          if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+            if (focusedIndex < widget.categories.length - 1) {
+              final nextNode = ref.read(categoryFocusNodeProvider(focusedIndex + 1));
+              Future.microtask(() => nextNode.requestFocus());
+            }
+            return KeyEventResult.handled;
+          }
+          return KeyEventResult.ignored;
+        },
         child: ListView.builder(
           itemCount: widget.categories.length,
           itemBuilder: (context, index) {
