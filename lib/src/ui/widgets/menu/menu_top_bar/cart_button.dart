@@ -29,6 +29,9 @@ class _CartButtonState extends ConsumerState<CartButton> {
           _goToCart();
           return KeyEventResult.handled;
         }
+        if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
+          return KeyEventResult.handled;
+        }
         return KeyEventResult.ignored;
       },
       child: InkWell(

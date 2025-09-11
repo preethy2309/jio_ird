@@ -62,8 +62,9 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 ),
               ),
             ),
-            const SizedBox(width: 16),
-            const Expanded(
+            Spacer(),
+            SizedBox(
+              width: 432,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../providers/focus_provider.dart';
 import '../../../../providers/state_provider.dart';
+import '../../../../utils/helper.dart';
 import '../../veg_indicator.dart';
 
 class VegToggle extends ConsumerStatefulWidget {
@@ -20,6 +21,9 @@ class _VegToggleState extends ConsumerState<VegToggle> {
   Widget build(BuildContext context) {
     final vegOnly = ref.watch(vegOnlyProvider);
     final focusNode = ref.watch(vegToggleFocusNodeProvider);
+    final selectedCategory = ref.watch(selectedCategoryProvider);
+    final showCategories = ref.watch(showCategoriesProvider);
+    final showSubCategories = ref.watch(showSubCategoriesProvider);
 
     return Focus(
       focusNode: focusNode,
@@ -40,7 +44,22 @@ class _VegToggleState extends ConsumerState<VegToggle> {
           }
 
           if (key == LogicalKeyboardKey.arrowLeft) {
-            return KeyEventResult.handled;
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (showCategories) {
+                var index = selectedCategory == -1 ? 0 : selectedCategory;
+                ref.read(categoryFocusNodeProvider(index)).requestFocus();
+              } else if (hasSubCategories(ref) && showSubCategories) {
+                var index = ref.watch(focusedSubCategoryProvider);
+                ref
+                    .read(subCategoryFocusNodeProvider(index == -1 ? 0 : index))
+                    .requestFocus();
+              } else {
+                var index = ref.watch(focusedDishProvider);
+                ref
+                    .read(dishFocusNodeProvider(index == -1 ? 0 : index))
+                    .requestFocus();
+              }
+            });
           }
         }
         return KeyEventResult.ignored;
