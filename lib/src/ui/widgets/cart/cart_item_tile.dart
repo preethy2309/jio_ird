@@ -71,7 +71,8 @@ class CartItemTile extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 6),
-                        Expanded(
+                        SizedBox(
+                          width: 150,
                           child: Text(
                             title,
                             style: const TextStyle(
@@ -80,7 +81,7 @@ class CartItemTile extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        const SizedBox(width: 60),
+                        const Spacer(),
                         Text(
                           "₹$price",
                           style: const TextStyle(
@@ -171,8 +172,11 @@ class CartItemTile extends StatelessWidget {
                       ),
                       child: Text(
                         cookingInstructions.isEmpty ? "Add" : "Edit",
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 13),
+                        style: TextStyle(
+                            color: hasFocus
+                                ? Theme.of(context).colorScheme.secondary
+                                : Colors.white,
+                            fontSize: 13),
                       ),
                     ),
                   );

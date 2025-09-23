@@ -136,7 +136,7 @@ class BillSummaryScreen extends ConsumerWidget {
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
                     (states) {
                       if (states.contains(WidgetState.focused)) {
-                        return Theme.of(context).primaryColor;
+                        return Theme.of(context).colorScheme.primary;
                       }
                       return Colors.white;
                     },
@@ -144,9 +144,9 @@ class BillSummaryScreen extends ConsumerWidget {
                   foregroundColor: WidgetStateProperty.resolveWith<Color>(
                     (states) {
                       if (states.contains(WidgetState.focused)) {
-                        return Theme.of(context).colorScheme.onPrimary;
+                        return Theme.of(context).colorScheme.secondary;
                       }
-                      return Theme.of(context).colorScheme.onSecondary;
+                      return Theme.of(context).colorScheme.primary;
                     },
                   ),
                   padding: WidgetStateProperty.all(

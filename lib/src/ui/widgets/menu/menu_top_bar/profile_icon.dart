@@ -19,7 +19,6 @@ class _ProfileIconState extends ConsumerState<ProfileIcon> {
     return InkWell(
       onTap: _goToProfile,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(26),
         child: SizedBox(
           height: 40,
           child: logo != null

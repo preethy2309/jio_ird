@@ -58,7 +58,7 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 5,
                 (index) => const Padding(
                   padding: EdgeInsets.symmetric(vertical: 2),
-                  child: ShimmerLoader(height: 75, width: 240),
+                  child: ShimmerLoader(height: 70, width: 240),
                 ),
               ),
             ),

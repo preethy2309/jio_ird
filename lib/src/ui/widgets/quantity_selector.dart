@@ -124,7 +124,7 @@ class _AnimatedQtyButtonState extends State<_AnimatedQtyButton> {
           height: _isFocused ? 36 : 28,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: _isFocused ? Theme.of(context).primaryColor : Colors.grey,
+            color: _isFocused ? Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2) : Colors.grey,
             shape: BoxShape.circle,
           ),
           child: Icon(

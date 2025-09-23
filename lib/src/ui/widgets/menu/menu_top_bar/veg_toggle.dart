@@ -80,7 +80,14 @@ class _VegToggleState extends ConsumerState<VegToggle> {
               children: [
                 const VegIndicator(),
                 const SizedBox(width: 10),
-                const Text('Veg Only', style: TextStyle(color: Colors.white)),
+                Text(
+                  'Veg Only',
+                  style: TextStyle(
+                    color: toggleFocused
+                        ? Theme.of(context).colorScheme.secondary
+                        : Colors.white,
+                  ),
+                ),
                 const SizedBox(width: 8),
                 SizedBox(
                   width: 46,
