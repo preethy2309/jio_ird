@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jio_ird/src/providers/external_providers.dart';
 
+import 'providers/external_providers.dart';
 import 'ui/screens/cart_screen.dart';
 import 'ui/screens/menu_screen.dart';
 

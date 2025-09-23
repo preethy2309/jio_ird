@@ -135,6 +135,11 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                 child: Focus(
                   onKeyEvent: _handleTextFieldKey,
                   child: TextField(
+                    textInputAction: TextInputAction.done,
+                    onSubmitted: (value) {
+                      FocusScope.of(context).unfocus();
+                      saveButtonFocus.requestFocus();
+                    },
                     focusNode: textFieldFocus,
                     controller: widget.controller,
                     expands: true,

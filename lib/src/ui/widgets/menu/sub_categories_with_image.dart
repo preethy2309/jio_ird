@@ -61,7 +61,9 @@ class _SubCategoriesWithImageState
             onKeyEvent: (node, event) {
               if (event is! KeyDownEvent) return KeyEventResult.ignored;
 
-              if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+              if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
+                  event.logicalKey == LogicalKeyboardKey.escape ||
+                  event.logicalKey == LogicalKeyboardKey.goBack) {
                 ref.read(showCategoriesProvider.notifier).state = true;
                 ref.read(selectedSubCategoryProvider.notifier).state = -1;
               }

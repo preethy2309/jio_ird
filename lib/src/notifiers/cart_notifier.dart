@@ -1,13 +1,19 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../data/models/dish_with_quantity.dart';
+import '../constants/jio_ird_events.dart';
+import '../services/event_bus.dart';
 
 class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
   static const _cartKey = "cart_items";
+  StreamSubscription<Map<String, dynamic>>? _subscription;
 
   CartNotifier() : super([]) {
     _loadCart();
+    _listenToEvents();
   }
 
   Future<void> _loadCart() async {
@@ -23,6 +29,14 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
     final prefs = await SharedPreferences.getInstance();
     final jsonString = jsonEncode(state.map((e) => e.toJson()).toList());
     await prefs.setString(_cartKey, jsonString);
+  }
+
+  void _listenToEvents() {
+    _subscription = JioIRDEventBus.instance.stream.listen((event) {
+      if (event[JioIRDEvents.eventName] == JioIRDEvents.clearCart) {
+        clearCart();
+      }
+    });
   }
 
   void addItem(DishWithQuantity newItem) {
@@ -78,9 +92,10 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
     state = [];
     _saveCart();
   }
-}
 
-final itemQuantitiesProvider =
-StateNotifierProvider<CartNotifier, List<DishWithQuantity>>((ref) {
-  return CartNotifier();
-});
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+}

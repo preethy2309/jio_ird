@@ -146,7 +146,7 @@ class BillSummaryScreen extends ConsumerWidget {
                       if (states.contains(WidgetState.focused)) {
                         return Theme.of(context).colorScheme.secondary;
                       }
-                      return Theme.of(context).colorScheme.primary;
+                      return Colors.black;
                     },
                   ),
                   padding: WidgetStateProperty.all(

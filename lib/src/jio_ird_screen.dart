@@ -1,12 +1,9 @@
-library jio_ird;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:jio_ird/src/data/models/guest_info.dart';
-import 'package:jio_ird/src/providers/external_providers.dart';
 
-import 'focus_theme.dart';
+import '../jio_ird.dart';
 import 'jio_ird_app.dart';
+import 'providers/external_providers.dart';
 
 class JioIRDScreen extends StatelessWidget {
   final FocusTheme focusTheme;
@@ -16,7 +13,6 @@ class JioIRDScreen extends StatelessWidget {
   final GuestInfo guestInfo;
   final String menuTitle;
   final Widget? bottomBar;
-  final Function(String event, dynamic data)? onSocketEvent;
   final String? backgroundImage;
   final String? hotelLogo;
 
@@ -29,7 +25,6 @@ class JioIRDScreen extends StatelessWidget {
     required this.guestInfo,
     this.menuTitle = "In Room Dining",
     this.bottomBar,
-    this.onSocketEvent,
     this.backgroundImage,
     this.hotelLogo,
   });
@@ -42,7 +37,6 @@ class JioIRDScreen extends StatelessWidget {
         accessTokenProvider.overrideWithValue(accessToken),
         serialNumberProvider.overrideWithValue(serialNumber),
         guestDetailsProvider.overrideWithValue(guestInfo),
-        socketEventProvider.overrideWithValue(onSocketEvent),
         menuTitleProvider.overrideWithValue(menuTitle),
         focusThemeProvider.overrideWithValue(focusTheme),
         bottomBarProvider.overrideWithValue(bottomBar),
