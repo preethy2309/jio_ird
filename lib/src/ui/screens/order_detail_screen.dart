@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/models/order_status_response.dart';
+import '../../providers/state_provider.dart';
 import '../widgets/my_orders/order_card.dart';
 import '../widgets/my_orders/order_info.dart';
 import 'base_screen.dart';
 
-class OrderDetailScreen extends StatelessWidget {
-  final OrderStatusResponse order;
+class OrderDetailScreen extends ConsumerWidget {
+  final int orderId;
 
   OrderDetailScreen({
     super.key,
-    required this.order,
+    required this.orderId,
   });
 
   final List<String> _statusOrder = [
@@ -37,7 +39,20 @@ class OrderDetailScreen extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final orderStatusAsync = ref.watch(orderStatusProvider);
+
+    return orderStatusAsync.when(
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (err, _) => Center(child: Text("Error: $err")),
+      data: (orders) {
+        final order = orders.firstWhere((o) => o.orderId == orderId);
+        return _buildOrderDetail(context, order);
+      },
+    );
+  }
+
+  Widget _buildOrderDetail(BuildContext context, OrderStatusResponse order) {
     return BaseScreen(
       title: "My Order",
       child: Padding(

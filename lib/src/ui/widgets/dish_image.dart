@@ -59,7 +59,7 @@ class DishImage extends StatelessWidget {
       child: Container(
         width: width,
         height: height,
-        color: Colors.grey[800],
+        color: Colors.transparent,
         alignment: Alignment.center,
         child: SvgPicture.asset(
           fallbackAsset,

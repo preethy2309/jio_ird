@@ -23,6 +23,12 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
       final List decoded = jsonDecode(jsonString);
       state = decoded.map((e) => DishWithQuantity.fromJson(e)).toList();
     }
+
+    final clearFlag = prefs.getBool('_clear_cart_flag') ?? false;
+    if (clearFlag) {
+      clearCart();
+      await prefs.remove('_clear_cart_flag');
+    }
   }
 
   Future<void> _saveCart() async {
@@ -99,3 +105,8 @@ class CartNotifier extends StateNotifier<List<DishWithQuantity>> {
     super.dispose();
   }
 }
+
+final itemQuantitiesProvider =
+StateNotifierProvider<CartNotifier, List<DishWithQuantity>>((ref) {
+  return CartNotifier();
+});

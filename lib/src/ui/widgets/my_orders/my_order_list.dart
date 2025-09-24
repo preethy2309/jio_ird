@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/ui/widgets/my_order_shimmer.dart';
 
+import '../../../../jio_ird.dart' show JioIRDEvents, JioIRD;
 import '../../../data/models/order_status_response.dart';
 import '../../../providers/state_provider.dart';
 import '../../screens/order_detail_screen.dart';
@@ -17,11 +20,25 @@ class MyOrderList extends ConsumerStatefulWidget {
 
 class _MyOrderListState extends ConsumerState<MyOrderList> {
   int? focusedIndex;
+  StreamSubscription? _eventSub;
 
   @override
   void initState() {
     super.initState();
     Future.microtask(() => ref.refresh(orderStatusProvider));
+
+    _eventSub = JioIRD.events.listen((event) {
+      final type = event[JioIRDEvents.eventName];
+      if (type == JioIRDEvents.orderStatus) {
+        Future.microtask(() => ref.refresh(orderStatusProvider));
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _eventSub?.cancel();
+    super.dispose();
   }
 
   @override
@@ -62,7 +79,7 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => OrderDetailScreen(order: order),
+                        builder: (context) => OrderDetailScreen(orderId: order.orderId),
                       ),
                     ),
                     child: _orderTile(
