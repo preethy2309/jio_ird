@@ -228,11 +228,9 @@ void showCookingInstructionDialog(
     barrierColor: Colors.black87,
     context: context,
     builder: (context) {
-      TextEditingController instructionController = TextEditingController();
-      instructionController.text = dish!.cookingRequest ?? '';
       return CookingInstructionDialog(
         dishName: dish.dish.name,
-        controller: instructionController,
+        initialText:  dish.cookingRequest ?? '',
         onSave: (text) {
           ref
               .read(itemQuantitiesProvider.notifier)

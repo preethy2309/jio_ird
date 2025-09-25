@@ -117,6 +117,7 @@ class DishDetail extends ConsumerWidget {
             ),
           Text(
             dish!.name,
+            maxLines: 1,
             style: const TextStyle(
                 fontSize: 18, color: Colors.white, fontWeight: FontWeight.bold),
           ),
@@ -184,13 +185,9 @@ class DishDetail extends ConsumerWidget {
                         barrierColor: Colors.black87,
                         context: context,
                         builder: (context) {
-                          TextEditingController instructionController =
-                              TextEditingController();
-                          instructionController.text =
-                              dish!.cookingRequest ?? '';
                           return CookingInstructionDialog(
                             dishName: dish!.name,
-                            controller: instructionController,
+                            initialText:  dish!.cookingRequest ?? '',
                             onSave: (text) {
                               ref
                                   .read(itemQuantitiesProvider.notifier)

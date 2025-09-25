@@ -61,6 +61,11 @@ class _VegToggleState extends ConsumerState<VegToggle> {
               }
             });
           }
+
+          if (key == LogicalKeyboardKey.arrowRight) {
+            ref.read(goToCartFocusNodeProvider).requestFocus();
+            return KeyEventResult.handled;
+          }
         }
         return KeyEventResult.ignored;
       },

@@ -48,6 +48,13 @@ final vegToggleFocusNodeProvider = Provider<FocusNode>((ref) {
   return node;
 });
 
+final goToCartFocusNodeProvider = Provider<FocusNode>((ref) {
+  final node = FocusNode();
+  ref.onDispose(() => node.dispose());
+  return node;
+});
+
+
 final cookingInstructionFocusNodeProvider =
 Provider.autoDispose<FocusNode>((ref) {
   final node = FocusNode(debugLabel: "CookingInstruction");

@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 
 class CookingInstructionDialog extends StatefulWidget {
   final String dishName;
-  final TextEditingController controller;
+  final String initialText;
   final void Function(String text) onSave;
   final VoidCallback onCancel;
 
   const CookingInstructionDialog({
     super.key,
     required this.dishName,
-    required this.controller,
+    this.initialText = "",
     required this.onSave,
     required this.onCancel,
   });
@@ -24,10 +24,14 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
   final FocusNode textFieldFocus = FocusNode();
   final FocusNode cancelButtonFocus = FocusNode();
   final FocusNode saveButtonFocus = FocusNode();
+  late TextEditingController _controller;
+  String currentText = "";
 
   @override
   void initState() {
     super.initState();
+    currentText = widget.initialText;
+    _controller = TextEditingController(text: currentText);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FocusScope.of(context).requestFocus(saveButtonFocus);
     });
@@ -38,6 +42,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
     textFieldFocus.dispose();
     cancelButtonFocus.dispose();
     saveButtonFocus.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -53,7 +58,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
         event.logicalKey == LogicalKeyboardKey.enter) {
       if (saveButtonFocus.hasFocus) {
         FocusScope.of(context).unfocus();
-        widget.onSave(widget.controller.text);
+        widget.onSave(currentText);
         return KeyEventResult.handled;
       }
       if (cancelButtonFocus.hasFocus) {
@@ -90,7 +95,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
       case LogicalKeyboardKey.select:
         if (saveButtonFocus.hasFocus) {
           FocusScope.of(context).unfocus();
-          widget.onSave(widget.controller.text);
+          widget.onSave(currentText);
           return KeyEventResult.handled;
         }
         if (cancelButtonFocus.hasFocus) {
@@ -135,17 +140,22 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                 child: Focus(
                   onKeyEvent: _handleTextFieldKey,
                   child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        currentText = value;
+                      });
+                    },
                     textInputAction: TextInputAction.done,
                     onSubmitted: (value) {
                       FocusScope.of(context).unfocus();
                       saveButtonFocus.requestFocus();
                     },
                     focusNode: textFieldFocus,
-                    controller: widget.controller,
                     expands: true,
                     maxLines: null,
                     style: const TextStyle(color: Colors.white, fontSize: 12),
                     textAlignVertical: TextAlignVertical.top,
+                    controller: _controller,
                     decoration: InputDecoration(
                       alignLabelWithHint: true,
                       hintText: "Add your cooking instruction here",
@@ -184,7 +194,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                hasFocus ? Theme.of(context).colorScheme.primary : Colors.grey[800],
+                            hasFocus ? Theme.of(context).colorScheme.primary : Colors.grey[800],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -215,11 +225,11 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                         return ElevatedButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            widget.onSave(widget.controller.text);
+                            widget.onSave(currentText);
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor:
-                                hasFocus ? Theme.of(context).colorScheme.primary : Colors.grey[800],
+                            hasFocus ? Theme.of(context).colorScheme.primary : Colors.grey[800],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
