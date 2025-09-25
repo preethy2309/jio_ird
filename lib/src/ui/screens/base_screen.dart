@@ -26,21 +26,32 @@ class BaseScreen extends ConsumerWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: bgImage != null
-                ? Image(
-                    image: bgImage,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
-                        'jio_ird/assets/images/bg.png',
-                        fit: BoxFit.cover,
-                      );
-                    },
-                  )
-                : Image.asset(
+            child: Container(
+              color: Colors.black, // Black background as fallback
+              child: bgImage != null
+                  ? Image(
+                image: bgImage,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Image.asset(
                     'jio_ird/assets/images/bg.png',
                     fit: BoxFit.cover,
-                  ),
+                  );
+                },
+              )
+                  : Image.asset(
+                'jio_ird/assets/images/bg.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+
+          // Black transparent overlay
+          Positioned.fill(
+            child: Container(
+              color: Colors.black
+                  .withValues(alpha: 0.7), // 70% opacity black overlay
+            ),
           ),
           Padding(
             padding: EdgeInsets.only(

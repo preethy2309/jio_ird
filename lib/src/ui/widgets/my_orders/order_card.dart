@@ -35,6 +35,8 @@ class _OrderCardState extends State<OrderCard> {
         return 2;
       case "served":
         return 3;
+      case "cancelled":
+        return 4;
       default:
         return 0;
     }
@@ -121,24 +123,36 @@ class _OrderCardState extends State<OrderCard> {
                     label: "Order Placed",
                     active: currentStep >= 0,
                   ),
-                  StatusConnector(active: currentStep >= 1),
-                  StatusStep(
-                    icon: Icons.check_circle_outline,
-                    label: "Accepted",
-                    active: currentStep >= 1,
-                  ),
-                  StatusConnector(active: currentStep >= 2),
-                  StatusStep(
-                    icon: Icons.restaurant_menu,
-                    label: "Preparing",
-                    active: currentStep >= 2,
-                  ),
-                  StatusConnector(active: currentStep >= 3),
-                  StatusStep(
-                    icon: Icons.delivery_dining,
-                    label: "Served",
-                    active: currentStep >= 3,
-                  ),
+                  if (currentStep == 4) ...[
+                    StatusConnector(
+                      active: true,
+                      width: 420,
+                    ),
+                    StatusStep(
+                      icon: Icons.cancel_outlined,
+                      label: "Cancelled",
+                      active: true,
+                    ),
+                  ] else ...[
+                    StatusConnector(active: currentStep >= 1),
+                    StatusStep(
+                      icon: Icons.check_circle_outline,
+                      label: "Accepted",
+                      active: currentStep >= 1,
+                    ),
+                    StatusConnector(active: currentStep >= 2),
+                    StatusStep(
+                      icon: Icons.restaurant_menu,
+                      label: "Preparing",
+                      active: currentStep >= 2,
+                    ),
+                    StatusConnector(active: currentStep >= 3),
+                    StatusStep(
+                      icon: Icons.delivery_dining,
+                      label: "Served",
+                      active: currentStep >= 3,
+                    ),
+                  ]
                 ],
               ),
             )

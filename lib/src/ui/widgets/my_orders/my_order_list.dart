@@ -183,7 +183,7 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
                   buttonText,
                   style: TextStyle(
                       color: isActive
-                          ? Theme.of(context).colorScheme.secondary
+                          ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
                           : Colors.white38),
                 ),
         ],

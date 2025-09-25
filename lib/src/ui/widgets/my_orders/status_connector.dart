@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 
 class StatusConnector extends StatelessWidget {
   final bool active;
+  final double? width;
 
-  const StatusConnector({required this.active, super.key});
+  const StatusConnector({required this.active, this.width, super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 120,
+      width: width ?? 120,
       child: DottedLine(
         direction: Axis.horizontal,
         dashLength: 4,

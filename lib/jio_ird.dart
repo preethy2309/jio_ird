@@ -19,7 +19,7 @@ class JioIRD {
     await prefs.setBool('_clear_cart_flag', true);
   }
 
-  static void orderPlaced(dynamic data) {
+  static void updateOrderStatus() {
     JioIRDEventBus.instance.emit(
       JioIRDEvents.orderStatus
     );
