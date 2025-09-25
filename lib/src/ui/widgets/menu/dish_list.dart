@@ -28,7 +28,6 @@ class _DishListState extends ConsumerState<DishList> {
   @override
   void initState() {
     super.initState();
-
     plusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
     minusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
   }
@@ -36,28 +35,18 @@ class _DishListState extends ConsumerState<DishList> {
   @override
   void didUpdateWidget(DishList oldWidget) {
     super.didUpdateWidget(oldWidget);
-
     if (oldWidget.dishes.length != widget.dishes.length) {
-      for (final node in plusFocusNodes) {
-        node.dispose();
-      }
+      for (final node in plusFocusNodes) node.dispose();
+      for (final node in minusFocusNodes) node.dispose();
       plusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
-
-      for (final node in minusFocusNodes) {
-        node.dispose();
-      }
       minusFocusNodes = List.generate(widget.dishes.length, (_) => FocusNode());
     }
   }
 
   @override
   void dispose() {
-    for (final node in plusFocusNodes) {
-      node.dispose();
-    }
-    for (final node in minusFocusNodes) {
-      node.dispose();
-    }
+    for (final node in plusFocusNodes) node.dispose();
+    for (final node in minusFocusNodes) node.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -83,18 +72,17 @@ class _DishListState extends ConsumerState<DishList> {
         hasSubCategories(ref) && ref.watch(showSubCategoriesProvider);
 
     return ListView.builder(
-      controller: _scrollController as ScrollController?,
+      controller: _scrollController,
       itemCount: widget.dishes.length,
       itemBuilder: (context, index) {
         final dish = widget.dishes[index];
         final isSelected = index == selectedDish;
         final isFocused = index == focusedDish;
-        final quantity = ref.watch(itemQuantitiesProvider.select((cart) => cart
-            .firstWhere(
+        final quantity = ref.watch(itemQuantitiesProvider.select((cart) =>
+        cart.firstWhere(
               (item) => item.dish.id == dish.id,
-              orElse: () => DishWithQuantity(dish: dish, quantity: 0),
-            )
-            .quantity));
+          orElse: () => DishWithQuantity(dish: dish, quantity: 0),
+        ).quantity));
 
         final dishNode = ref.watch(dishFocusNodeProvider(index));
         final plusNode = plusFocusNodes[index];
@@ -121,6 +109,29 @@ class _DishListState extends ConsumerState<DishList> {
           onKeyEvent: (node, event) {
             if (event is! KeyDownEvent) return KeyEventResult.ignored;
             ref.read(isDishFocusedProvider.notifier).state = isFocused;
+
+            if (event.logicalKey == LogicalKeyboardKey.arrowUp && isFocused) {
+              if (index == 0) {
+                ref.read(vegToggleFocusNodeProvider).requestFocus();
+              } else {
+                final prevIndex = index - 1;
+                Future.microtask(() {
+                  ref.read(dishFocusNodeProvider(prevIndex)).requestFocus();
+                  _ensureVisible(ref.read(dishFocusNodeProvider(prevIndex)));
+                });
+              }
+              return KeyEventResult.handled;
+            }
+
+            if (event.logicalKey == LogicalKeyboardKey.arrowDown && isFocused) {
+              final nextIndex = index + 1 < widget.dishes.length ? index + 1 : 0;
+              Future.microtask(() {
+                ref.read(dishFocusNodeProvider(nextIndex)).requestFocus();
+                _ensureVisible(ref.read(dishFocusNodeProvider(nextIndex)));
+              });
+              return KeyEventResult.handled;
+            }
+
             if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
               if (isFocused) {
                 if (minusNode.hasFocus) {
@@ -162,16 +173,16 @@ class _DishListState extends ConsumerState<DishList> {
               }
             }
 
-            if (event.logicalKey == LogicalKeyboardKey.enter ||
-                event.logicalKey == LogicalKeyboardKey.select) {
-              final idx =
-                  itemQuantities.indexWhere((e) => e.dish.id == dish.id);
+            if ((event.logicalKey == LogicalKeyboardKey.enter ||
+                event.logicalKey == LogicalKeyboardKey.select) &&
+                isFocused) {
+              final idx = itemQuantities.indexWhere((e) => e.dish.id == dish.id);
               final currentQty = idx >= 0 ? itemQuantities[idx].quantity : 0;
 
               if (currentQty == 0) {
-                ref
-                    .read(itemQuantitiesProvider.notifier)
-                    .addItem(DishWithQuantity(dish: dish, quantity: 1));
+                ref.read(itemQuantitiesProvider.notifier).addItem(
+                  DishWithQuantity(dish: dish, quantity: 1),
+                );
                 Future.microtask(() {
                   plusNode.requestFocus();
                   _ensureVisible(plusNode);
@@ -222,22 +233,18 @@ class _DishListState extends ConsumerState<DishList> {
                       ElevatedButton(
                         onPressed: () {
                           ref.read(itemQuantitiesProvider.notifier).addItem(
-                                DishWithQuantity(dish: dish, quantity: 1),
-                              );
+                            DishWithQuantity(dish: dish, quantity: 1),
+                          );
                           Future.microtask(() {
                             plusNode.requestFocus();
                             _ensureVisible(plusNode);
                           });
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          foregroundColor:
-                              Theme.of(context).colorScheme.onPrimary,
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 6),
-                          textStyle: const TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.bold),
+                          backgroundColor: Theme.of(context).colorScheme.primary,
+                          foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                          textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                         ),
                         child: const Text("Add to Cart"),
                       )
@@ -290,10 +297,7 @@ class _DishListState extends ConsumerState<DishList> {
                     Expanded(
                       child: Text(
                         dish.name,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
+                        style: const TextStyle(color: Colors.white, fontSize: 16),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/ui/widgets/menu/sub_category_tile.dart';
 
@@ -16,20 +17,51 @@ class SubCategoryList extends ConsumerStatefulWidget {
 }
 
 class _SubCategoryListState extends ConsumerState<SubCategoryList> {
+  int focusedIndex = -1;
+
   @override
   Widget build(BuildContext context) {
     final selectedSub = ref.watch(selectedSubCategoryProvider);
-    final focusedIndex = ref.watch(focusedSubCategoryProvider);
-    final showCategories = ref.watch(showCategoriesProvider);
     final noDishes = ref.watch(noDishesProvider);
+    final showCategories = ref.watch(showCategoriesProvider);
 
     return Focus(
       skipTraversal: showCategories,
       canRequestFocus: !showCategories,
       onFocusChange: (hasFocus) {
         if (!hasFocus) {
+          setState(() => focusedIndex = -1);
           ref.read(focusedSubCategoryProvider.notifier).state = -1;
         }
+      },
+      onKeyEvent: (node, event) {
+        if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+        if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+          if (focusedIndex > 0) {
+            final prevNode =
+                ref.read(subCategoryFocusNodeProvider(focusedIndex - 1));
+            Future.microtask(() => prevNode.requestFocus());
+            return KeyEventResult.handled;
+          } else if (focusedIndex == 0) {
+            final vegToggleNode = ref.read(vegToggleFocusNodeProvider);
+            Future.microtask(() => vegToggleNode.requestFocus());
+            return KeyEventResult.handled;
+          }
+        }
+
+        if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+          if (focusedIndex < widget.subCategories.length - 1) {
+            final nextNode =
+                ref.read(subCategoryFocusNodeProvider(focusedIndex + 1));
+            Future.microtask(() => nextNode.requestFocus());
+            return KeyEventResult.handled;
+          } else if (focusedIndex == widget.subCategories.length - 1) {
+            return KeyEventResult.handled;
+          }
+        }
+
+        return KeyEventResult.ignored;
       },
       child: ListView.builder(
         itemCount: widget.subCategories.length,
@@ -55,8 +87,13 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
             },
             onFocusChange: (hasFocus) {
               ref.read(isSubCategoryListFocusedProvider.notifier).state =
-                  isFocused;
+                  hasFocus;
               ref.read(isDishFocusedProvider.notifier).state = false;
+
+              setState(() {
+                focusedIndex = hasFocus ? index : focusedIndex;
+              });
+
               if (hasFocus) {
                 ref.read(focusedSubCategoryProvider.notifier).state = index;
                 ref.read(selectedSubCategoryProvider.notifier).state = index;
@@ -67,6 +104,7 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
             onLeft: () {
               ref.read(showCategoriesProvider.notifier).state = true;
               ref.read(selectedSubCategoryProvider.notifier).state = -1;
+              ref.read(isCategoryFocusedProvider.notifier).state = true;
             },
           );
         },

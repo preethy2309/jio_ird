@@ -6,6 +6,7 @@ import 'package:jio_ird/src/providers/focus_provider.dart';
 
 import '../../../../notifiers/cart_notifier.dart';
 import '../../../../providers/state_provider.dart';
+import '../../../../utils/helper.dart';
 
 class CartButton extends ConsumerStatefulWidget {
   const CartButton({super.key});
@@ -23,14 +24,16 @@ class _CartButtonState extends ConsumerState<CartButton> {
     final totalCount = ref
         .watch(itemQuantitiesProvider)
         .fold(0, (sum, dishWithQty) => sum + dishWithQty.quantity);
+    final selectedCategory = ref.watch(selectedCategoryProvider);
+    final showCategories = ref.watch(showCategoriesProvider);
+    final showSubCategories = ref.watch(showSubCategoriesProvider);
 
     return Focus(
       focusNode: focusNode,
       onFocusChange: (hasFocus) {
         setState(() => cartFocused = hasFocus);
-        ref.read(resetFocusProvider);
+        if (hasFocus) ref.read(resetFocusProvider);
       },
-
       onKeyEvent: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.select ||
             event.logicalKey == LogicalKeyboardKey.enter) {
@@ -39,6 +42,30 @@ class _CartButtonState extends ConsumerState<CartButton> {
         }
         if (event.logicalKey == LogicalKeyboardKey.arrowRight) {
           return KeyEventResult.handled;
+        }
+
+        if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
+          ref.read(vegToggleFocusNodeProvider).requestFocus();
+          return KeyEventResult.handled;
+        }
+
+        if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (showCategories) {
+              var index = selectedCategory == -1 ? 0 : selectedCategory;
+              ref.read(categoryFocusNodeProvider(index)).requestFocus();
+            } else if (hasSubCategories(ref) && showSubCategories) {
+              var index = ref.watch(focusedSubCategoryProvider);
+              ref
+                  .read(subCategoryFocusNodeProvider(index == -1 ? 0 : index))
+                  .requestFocus();
+            } else {
+              var index = ref.watch(focusedDishProvider);
+              ref
+                  .read(dishFocusNodeProvider(index == -1 ? 0 : index))
+                  .requestFocus();
+            }
+          });
         }
         return KeyEventResult.ignored;
       },
@@ -58,14 +85,15 @@ class _CartButtonState extends ConsumerState<CartButton> {
                 borderRadius: BorderRadius.circular(26),
                 boxShadow: cartFocused
                     ? [
-                  BoxShadow(
-                    color: Theme.of(context)
-                        .colorScheme.secondary
-                        .withValues(alpha: 0.5),
-                    blurRadius: 8,
-                    offset: const Offset(0, 2),
-                  )
-                ]
+                        BoxShadow(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .secondary
+                              .withValues(alpha: 0.5),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        )
+                      ]
                     : [],
               ),
               child: SizedBox(
@@ -92,7 +120,7 @@ class _CartButtonState extends ConsumerState<CartButton> {
                             ? Theme.of(context).colorScheme.secondary
                             : Colors.white,
                         fontWeight:
-                        cartFocused ? FontWeight.bold : FontWeight.normal,
+                            cartFocused ? FontWeight.bold : FontWeight.normal,
                       ),
                       duration: const Duration(milliseconds: 150),
                       child: const Text('Go to Cart'),
@@ -130,7 +158,7 @@ class _CartButtonState extends ConsumerState<CartButton> {
   void _goToCart() {
     Navigator.of(context).pushNamedAndRemoveUntil(
       '/cart',
-          (route) => route.settings.name != '/cart',
+      (route) => route.settings.name != '/cart',
     );
   }
 }

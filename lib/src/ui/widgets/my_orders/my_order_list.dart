@@ -6,8 +6,8 @@ import 'package:jio_ird/src/ui/widgets/my_order_shimmer.dart';
 
 import '../../../../jio_ird.dart' show JioIRDEvents, JioIRD;
 import '../../../data/models/order_status_response.dart';
+import '../../../jio_ird_app.dart';
 import '../../../providers/state_provider.dart';
-import '../../screens/order_detail_screen.dart';
 import '../cart/cart_empty.dart';
 import 'order_info.dart';
 
@@ -76,11 +76,9 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
                     }
                   },
                   child: InkWell(
-                    onTap: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OrderDetailScreen(orderId: order.orderId),
-                      ),
+                    onTap: () => moduleNavigatorKey.currentState?.pushNamed(
+                      '/orderDetail',
+                      arguments: order.orderId,
                     ),
                     child: _orderTile(
                       orderNo: order.orderId.toString(),
@@ -183,7 +181,10 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
                   buttonText,
                   style: TextStyle(
                       color: isActive
-                          ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
+                          ? Theme.of(context)
+                              .colorScheme
+                              .primary
+                              .withOpacity(0.5)
                           : Colors.white38),
                 ),
         ],

@@ -44,7 +44,8 @@ class _VegToggleState extends ConsumerState<VegToggle> {
             return KeyEventResult.handled;
           }
 
-          if (key == LogicalKeyboardKey.arrowLeft) {
+          if (key == LogicalKeyboardKey.arrowLeft ||
+              key == LogicalKeyboardKey.arrowDown) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
               if (showCategories) {
                 var index = selectedCategory == -1 ? 0 : selectedCategory;

@@ -37,6 +37,8 @@ final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
 
 final orderPlacedProvider = StateProvider<bool>((ref) => false);
 
+final currentRouteProvider = StateProvider<String>((ref) => '/menu');
+
 final isSubCategoryListFocusedProvider = StateProvider<bool>((ref) => false);
 final isCategoryFocusedProvider = StateProvider<bool>((ref) => false);
 final isDishFocusedProvider = StateProvider<bool>((ref) => false);
@@ -66,9 +68,7 @@ final noDishesProvider = Provider<bool>((ref) {
       : extractDishesFromCategory(selectedCat);
 
   final filteredDishes = vegOnly
-      ? allDishes
-          .where((dish) => dish.dishType.toLowerCase() == 'veg')
-          .toList()
+      ? allDishes.where((dish) => dish.dishType.toLowerCase() == 'veg').toList()
       : allDishes;
 
   return filteredDishes.isEmpty;
