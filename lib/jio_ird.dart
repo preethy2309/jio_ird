@@ -24,7 +24,4 @@ class JioIRD {
       JioIRDEvents.orderStatus
     );
   }
-
-  static Stream<Map<String, dynamic>> get events =>
-      JioIRDEventBus.instance.stream;
 }

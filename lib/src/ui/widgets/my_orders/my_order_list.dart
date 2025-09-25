@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:jio_ird/src/ui/widgets/my_order_shimmer.dart';
 
-import '../../../../jio_ird.dart' show JioIRDEvents, JioIRD;
+import '../../../../jio_ird.dart';
 import '../../../data/models/order_status_response.dart';
 import '../../../jio_ird_app.dart';
 import '../../../providers/state_provider.dart';
@@ -27,7 +27,7 @@ class _MyOrderListState extends ConsumerState<MyOrderList> {
     super.initState();
     Future.microtask(() => ref.refresh(orderStatusProvider));
 
-    _eventSub = JioIRD.events.listen((event) {
+    _eventSub = JioIRDEventBus.instance.stream.listen((event) {
       final type = event[JioIRDEvents.eventName];
       if (type == JioIRDEvents.orderStatus) {
         Future.microtask(() => ref.refresh(orderStatusProvider));
