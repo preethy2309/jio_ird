@@ -37,6 +37,18 @@ final selectedCartTabProvider = StateProvider<CartTab>((ref) => CartTab.cart);
 
 final orderPlacedProvider = StateProvider<bool>((ref) => false);
 
+final isSubCategoryListFocusedProvider = StateProvider<bool>((ref) => false);
+final isCategoryFocusedProvider = StateProvider<bool>((ref) => false);
+final isDishFocusedProvider = StateProvider<bool>((ref) => false);
+
+final resetFocusProvider = Provider<void Function()>((ref) {
+  return () {
+    ref.read(isSubCategoryListFocusedProvider.notifier).state = false;
+    ref.read(isCategoryFocusedProvider.notifier).state = false;
+    ref.read(isDishFocusedProvider.notifier).state = false;
+  };
+});
+
 final noDishesProvider = Provider<bool>((ref) {
   final vegOnly = ref.watch(vegOnlyProvider);
   final selectedCategory = ref.watch(selectedCategoryProvider);

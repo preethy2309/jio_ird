@@ -23,59 +23,53 @@ class _SubCategoryListState extends ConsumerState<SubCategoryList> {
     final showCategories = ref.watch(showCategoriesProvider);
     final noDishes = ref.watch(noDishesProvider);
 
-    return PopScope(
-      canPop: false,
-      onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) {
-          ref.read(showCategoriesProvider.notifier).state = true;
+    return Focus(
+      skipTraversal: showCategories,
+      canRequestFocus: !showCategories,
+      onFocusChange: (hasFocus) {
+        if (!hasFocus) {
+          ref.read(focusedSubCategoryProvider.notifier).state = -1;
         }
       },
-      child: Focus(
-        skipTraversal: showCategories,
-        canRequestFocus: !showCategories,
-        onFocusChange: (hasFocus) {
-          if (!hasFocus) {
-            ref.read(focusedSubCategoryProvider.notifier).state = -1;
-          }
+      child: ListView.builder(
+        itemCount: widget.subCategories.length,
+        itemBuilder: (context, index) {
+          final isSelected = index == selectedSub;
+          final isFocused = index == focusedIndex;
+
+          final focusNode = ref.watch(subCategoryFocusNodeProvider(index));
+          return SubCategoryTile(
+            subCategory: widget.subCategories[index],
+            index: index,
+            isSelected: isSelected,
+            isFocused: isFocused,
+            focusNode: focusNode,
+            isLastIndex: index == widget.subCategories.length - 1,
+            onSelect: () {
+              if (!noDishes) {
+                ref.read(selectedSubCategoryProvider.notifier).state = index;
+                ref.read(showSubCategoriesProvider.notifier).state = false;
+                ref.read(focusedDishProvider.notifier).state = -1;
+                ref.read(selectedDishProvider.notifier).state = -1;
+              }
+            },
+            onFocusChange: (hasFocus) {
+              ref.read(isSubCategoryListFocusedProvider.notifier).state =
+                  isFocused;
+              ref.read(isDishFocusedProvider.notifier).state = false;
+              if (hasFocus) {
+                ref.read(focusedSubCategoryProvider.notifier).state = index;
+                ref.read(selectedSubCategoryProvider.notifier).state = index;
+                ref.read(selectedDishProvider.notifier).state = -1;
+                ref.read(focusedDishProvider.notifier).state = -1;
+              }
+            },
+            onLeft: () {
+              ref.read(showCategoriesProvider.notifier).state = true;
+              ref.read(selectedSubCategoryProvider.notifier).state = -1;
+            },
+          );
         },
-        child: ListView.builder(
-          itemCount: widget.subCategories.length,
-          itemBuilder: (context, index) {
-            final isSelected = index == selectedSub;
-            final isFocused = index == focusedIndex;
-
-            final focusNode = ref.watch(subCategoryFocusNodeProvider(index));
-
-            return SubCategoryTile(
-              subCategory: widget.subCategories[index],
-              index: index,
-              isSelected: isSelected,
-              isFocused: isFocused,
-              focusNode: focusNode,
-              isLastIndex: index == widget.subCategories.length - 1,
-              onSelect: () {
-                if (!noDishes) {
-                  ref.read(selectedSubCategoryProvider.notifier).state = index;
-                  ref.read(showSubCategoriesProvider.notifier).state = false;
-                  ref.read(focusedDishProvider.notifier).state = -1;
-                  ref.read(selectedDishProvider.notifier).state = -1;
-                }
-              },
-              onFocusChange: (hasFocus) {
-                  if (hasFocus) {
-                    ref.read(focusedSubCategoryProvider.notifier).state = index;
-                    ref.read(selectedSubCategoryProvider.notifier).state = index;
-                    ref.read(selectedDishProvider.notifier).state = -1;
-                    ref.read(focusedDishProvider.notifier).state = -1;
-                  }
-              },
-              onLeft: () {
-                ref.read(showCategoriesProvider.notifier).state = true;
-                ref.read(selectedSubCategoryProvider.notifier).state = -1;
-              },
-            );
-          },
-        ),
       ),
     );
   }

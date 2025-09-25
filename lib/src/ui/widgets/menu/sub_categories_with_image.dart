@@ -36,89 +36,77 @@ class _SubCategoriesWithImageState
 
         final focusNode = ref.watch(subCategoryMainFocusNodeProvider(index));
 
-        return PopScope(
-          canPop: false,
-          onPopInvokedWithResult: (didPop, _) {
-            if (!didPop && isFocused) {
-              if (hasSubCategories(ref)) {
-                ref.read(showSubCategoriesProvider.notifier).state = true;
-              } else {
-                ref.read(showCategoriesProvider.notifier).state = true;
-              }
+        return Focus(
+          skipTraversal: showCategories,
+          canRequestFocus: !showCategories,
+          focusNode: focusNode,
+          onFocusChange: (hasFocus) {
+            ref.read(focusedSubCategoryProvider.notifier).state = index;
+            if (hasFocus) {
+              ref.read(focusedDishProvider.notifier).state = -1;
+              ref.read(selectedDishProvider.notifier).state = -1;
             }
           },
-          child: Focus(
-            skipTraversal: showCategories,
-            canRequestFocus: !showCategories,
-            focusNode: focusNode,
-            onFocusChange: (hasFocus) {
-              ref.read(focusedSubCategoryProvider.notifier).state = index;
-              if (hasFocus) {
+          onKeyEvent: (node, event) {
+            if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
+            if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
+                event.logicalKey == LogicalKeyboardKey.escape ||
+                event.logicalKey == LogicalKeyboardKey.goBack) {
+              ref.read(showCategoriesProvider.notifier).state = true;
+              ref.read(selectedSubCategoryProvider.notifier).state = -1;
+            }
+
+            if ((event.logicalKey == LogicalKeyboardKey.arrowRight ||
+                event.logicalKey == LogicalKeyboardKey.enter ||
+                event.logicalKey == LogicalKeyboardKey.select)) {
+              if (!noDishes) {
+                ref.read(selectedSubCategoryProvider.notifier).state = index;
+                ref.read(showSubCategoriesProvider.notifier).state = false;
                 ref.read(focusedDishProvider.notifier).state = -1;
-                ref.read(selectedDishProvider.notifier).state = -1;
+                ref.read(selectedDishProvider.notifier).state = 0;
+                return KeyEventResult.handled;
               }
-            },
-            onKeyEvent: (node, event) {
-              if (event is! KeyDownEvent) return KeyEventResult.ignored;
-
-              if (event.logicalKey == LogicalKeyboardKey.arrowLeft ||
-                  event.logicalKey == LogicalKeyboardKey.escape ||
-                  event.logicalKey == LogicalKeyboardKey.goBack) {
-                ref.read(showCategoriesProvider.notifier).state = true;
-                ref.read(selectedSubCategoryProvider.notifier).state = -1;
-              }
-
-              if ((event.logicalKey == LogicalKeyboardKey.arrowRight ||
-                  event.logicalKey == LogicalKeyboardKey.enter ||
-                  event.logicalKey == LogicalKeyboardKey.select)) {
-                if (!noDishes) {
-                  ref.read(selectedSubCategoryProvider.notifier).state = index;
-                  ref.read(showSubCategoriesProvider.notifier).state = false;
-                  ref.read(focusedDishProvider.notifier).state = -1;
-                  ref.read(selectedDishProvider.notifier).state = 0;
-                  return KeyEventResult.handled;
-                }
-              }
-              return KeyEventResult.ignored;
-            },
-            child: Container(
-              height: 76,
-              margin: const EdgeInsets.all(2),
-              padding: const EdgeInsets.all(10),
-              decoration: BoxDecoration(
-                color: isFocused
-                    ? Theme.of(context).colorScheme.secondary
-                    : Colors.transparent,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Row(
-                children: [
-                  DishImage(
-                    imageUrl: subCategory.dishes?.isNotEmpty == true
-                        ? subCategory.dishes![0].dishImage
-                        : null,
-                    width: 75,
-                    height: 75,
-                    borderRadius: 6,
-                    fallbackWidth: 45,
-                    fallbackHeight: 45,
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: Text(
-                      subCategory.categoryName ?? '',
-                      style: TextStyle(
-                        color: isFocused
-                            ? Theme.of(context).colorScheme.primary
-                            : Colors.white,
-                        fontSize: 16,
-                      ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
+            }
+            return KeyEventResult.ignored;
+          },
+          child: Container(
+            height: 76,
+            margin: const EdgeInsets.all(2),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: isFocused
+                  ? Theme.of(context).colorScheme.secondary
+                  : Colors.transparent,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Row(
+              children: [
+                DishImage(
+                  imageUrl: subCategory.dishes?.isNotEmpty == true
+                      ? subCategory.dishes![0].dishImage
+                      : null,
+                  width: 75,
+                  height: 75,
+                  borderRadius: 6,
+                  fallbackWidth: 45,
+                  fallbackHeight: 45,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    subCategory.categoryName ?? '',
+                    style: TextStyle(
+                      color: isFocused
+                          ? Theme.of(context).colorScheme.primary
+                          : Colors.white,
+                      fontSize: 16,
                     ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );

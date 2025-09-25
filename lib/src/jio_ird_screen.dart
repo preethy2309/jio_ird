@@ -43,7 +43,7 @@ class JioIRDScreen extends StatelessWidget {
         backgroundImageRawProvider.overrideWithValue(backgroundImage),
         hotelLogoRawProvider.overrideWithValue(hotelLogo),
       ],
-      child: const JioIRDApp(),
+      child: const JioIRDModule(),
     );
   }
 }

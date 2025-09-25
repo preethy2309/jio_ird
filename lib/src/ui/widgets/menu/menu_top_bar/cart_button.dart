@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jio_ird/src/providers/focus_provider.dart';
 
 import '../../../../notifiers/cart_notifier.dart';
+import '../../../../providers/state_provider.dart';
 
 class CartButton extends ConsumerStatefulWidget {
   const CartButton({super.key});
@@ -25,7 +26,11 @@ class _CartButtonState extends ConsumerState<CartButton> {
 
     return Focus(
       focusNode: focusNode,
-      onFocusChange: (hasFocus) => setState(() => cartFocused = hasFocus),
+      onFocusChange: (hasFocus) {
+        setState(() => cartFocused = hasFocus);
+        ref.read(resetFocusProvider);
+      },
+
       onKeyEvent: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.select ||
             event.logicalKey == LogicalKeyboardKey.enter) {

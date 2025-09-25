@@ -25,83 +25,78 @@ class _CategoryListState extends ConsumerState<CategoryList> {
     final selectedCategory = ref.watch(selectedCategoryProvider);
     final noDishes = ref.watch(noDishesProvider);
 
-    return PopScope(
-      canPop: true,
-      onPopInvoked: (didPop) {
-        SystemNavigator.pop();
+    return Focus(
+      onFocusChange: (hasFocus) {
+        if (!hasFocus) {
+          setState(() => focusedIndex = -1);
+        }
       },
-      child: Focus(
-        onFocusChange: (hasFocus) {
-          if (!hasFocus) {
-            setState(() => focusedIndex = -1);
-          }
-        },
-        onKeyEvent: (node, event) {
-          if (event is! KeyDownEvent) return KeyEventResult.ignored;
-
-          if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
-            if (focusedIndex > 0) {
-              final prevNode = ref.read(categoryFocusNodeProvider(focusedIndex - 1));
-              Future.microtask(() => prevNode.requestFocus());
-              return KeyEventResult.handled;
-            }
-          }
-
-          if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
-            if (focusedIndex < widget.categories.length - 1) {
-              final nextNode = ref.read(categoryFocusNodeProvider(focusedIndex + 1));
-              Future.microtask(() => nextNode.requestFocus());
-            }
+      onKeyEvent: (node, event) {
+        if (event is! KeyDownEvent) return KeyEventResult.ignored;
+        if (event.logicalKey == LogicalKeyboardKey.arrowUp) {
+          if (focusedIndex > 0) {
+            final prevNode = ref.read(categoryFocusNodeProvider(focusedIndex - 1));
+            Future.microtask(() => prevNode.requestFocus());
             return KeyEventResult.handled;
           }
-          return KeyEventResult.ignored;
-        },
-        child: ListView.builder(
-          itemCount: widget.categories.length,
-          itemBuilder: (context, index) {
-            final isSelected = index == selectedCategory;
-            final isFocused = index == focusedIndex;
+        }
 
-            final focusNode = ref.watch(categoryFocusNodeProvider(index));
+        if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+          if (focusedIndex < widget.categories.length - 1) {
+            final nextNode = ref.read(categoryFocusNodeProvider(focusedIndex + 1));
+            Future.microtask(() => nextNode.requestFocus());
+          }
+          return KeyEventResult.handled;
+        }
+        return KeyEventResult.ignored;
+      },
+      child: ListView.builder(
+        itemCount: widget.categories.length,
+        itemBuilder: (context, index) {
+          final isSelected = index == selectedCategory;
+          final isFocused = index == focusedIndex;
 
-            return CategoryTile(
-              title: widget.categories[index].categoryName ?? '',
-              index: index,
-              isSelected: isSelected,
-              isFocused: isFocused,
-              focusNode: focusNode,
-              isLastIndex: index == widget.categories.length - 1,
-              onSelect: () {
-                if (!noDishes) {
-                  ref.read(selectedCategoryProvider.notifier).state = index;
-                  ref.read(showCategoriesProvider.notifier).state = false;
-                  if (hasSubCategories(ref)) {
-                    ref.read(selectedSubCategoryProvider.notifier).state = -1;
-                    ref.read(focusedSubCategoryProvider.notifier).state = 0;
-                    ref.read(focusedDishProvider.notifier).state = -1;
-                    ref.read(selectedDishProvider.notifier).state = -1;
-                  } else {
-                    ref.read(selectedDishProvider.notifier).state = -1;
-                    ref.read(focusedDishProvider.notifier).state = 0;
-                  }
-                }
-              },
-              onFocusChange: (hasFocus) {
-                setState(() {
-                  focusedIndex = hasFocus ? index : focusedIndex;
-                });
-                if (hasFocus) {
-                  ref.read(selectedCategoryProvider.notifier).state = index;
-                  ref.read(focusedSubCategoryProvider.notifier).state = -1;
+          final focusNode = ref.watch(categoryFocusNodeProvider(index));
+
+          return CategoryTile(
+            title: widget.categories[index].categoryName ?? '',
+            index: index,
+            isSelected: isSelected,
+            isFocused: isFocused,
+            focusNode: focusNode,
+            isLastIndex: index == widget.categories.length - 1,
+            onSelect: () {
+              if (!noDishes) {
+                ref.read(selectedCategoryProvider.notifier).state = index;
+                ref.read(showCategoriesProvider.notifier).state = false;
+                if (hasSubCategories(ref)) {
                   ref.read(selectedSubCategoryProvider.notifier).state = -1;
-                  ref.read(selectedDishProvider.notifier).state = -1;
+                  ref.read(focusedSubCategoryProvider.notifier).state = 0;
                   ref.read(focusedDishProvider.notifier).state = -1;
+                  ref.read(selectedDishProvider.notifier).state = -1;
+                } else {
+                  ref.read(selectedDishProvider.notifier).state = -1;
+                  ref.read(focusedDishProvider.notifier).state = 0;
                 }
-              },
-              onLeft: () {},
-            );
-          },
-        ),
+              }
+            },
+            onFocusChange: (hasFocus) {
+              ref.read(isCategoryFocusedProvider.notifier).state = isFocused;
+              setState(() {
+                focusedIndex = hasFocus ? index : focusedIndex;
+              });
+              if (hasFocus) {
+                ref.read(isSubCategoryListFocusedProvider.notifier).state = false;
+                ref.read(selectedCategoryProvider.notifier).state = index;
+                ref.read(focusedSubCategoryProvider.notifier).state = -1;
+                ref.read(selectedSubCategoryProvider.notifier).state = -1;
+                ref.read(selectedDishProvider.notifier).state = -1;
+                ref.read(focusedDishProvider.notifier).state = -1;
+              }
+            },
+            onLeft: () {},
+          );
+        },
       ),
     );
   }

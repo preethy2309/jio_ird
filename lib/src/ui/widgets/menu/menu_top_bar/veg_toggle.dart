@@ -30,6 +30,7 @@ class _VegToggleState extends ConsumerState<VegToggle> {
       onFocusChange: (hasFocus) {
         setState(() => toggleFocused = hasFocus);
         if (hasFocus) {
+          ref.read(resetFocusProvider);
           ref.read(focusedDishProvider.notifier).state = -2;
         }
       },
