@@ -56,7 +56,9 @@ class _OrderCardState extends State<OrderCard> {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: isFocused ? Colors.white70 : const Color(0xFF1E1E1E),
+          color: isFocused
+              ? Theme.of(context).colorScheme.secondary
+              : const Color(0xFF1E1E1E),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -124,11 +126,11 @@ class _OrderCardState extends State<OrderCard> {
                     active: currentStep >= 0,
                   ),
                   if (currentStep == 4) ...[
-                    StatusConnector(
+                    const StatusConnector(
                       active: true,
                       width: 420,
                     ),
-                    StatusStep(
+                    const StatusStep(
                       icon: Icons.cancel_outlined,
                       label: "Cancelled",
                       active: true,

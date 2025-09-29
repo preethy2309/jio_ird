@@ -57,28 +57,36 @@ class _OrderPlacedState extends State<OrderPlaced> {
           const SizedBox(height: 20),
           ElevatedButton(
             focusNode: _trackOrderButtonFocusNode,
+            onPressed: widget.onTrackOrder,
             style: ButtonStyle(
-              backgroundColor: WidgetStateProperty.resolveWith<Color>((states) {
-                if (states.contains(WidgetState.focused)) {
-                  return Theme.of(context).colorScheme.primary;
-                }
-                return Colors.white;
-              }),
+              backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                (states) {
+                  if (states.contains(WidgetState.focused)) {
+                    return Theme.of(context).colorScheme.primary;
+                  }
+                  return Theme.of(context).colorScheme.secondary;
+                },
+              ),
+              foregroundColor: WidgetStateProperty.resolveWith<Color>(
+                (states) {
+                  if (states.contains(WidgetState.focused)) {
+                    return Theme.of(context).colorScheme.onPrimary;
+                  }
+                  return Theme.of(context).colorScheme.onSecondary;
+                },
+              ),
               padding: WidgetStateProperty.all(
-                const EdgeInsets.symmetric(horizontal: 24),
+                const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
               ),
               shape: WidgetStateProperty.all(
                 RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(24),
                 ),
               ),
             ),
-            onPressed: widget.onTrackOrder,
-            child: Text(
-              "Track order",
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+            child: const Text(
+              "Track Order",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jio_ird/src/utils/colors.dart';
 
 class QuantitySelector extends StatelessWidget {
   final int quantity;
@@ -6,6 +7,7 @@ class QuantitySelector extends StatelessWidget {
   final VoidCallback onDecrement;
   final FocusNode plusButtonFocusNode;
   final FocusNode minusButtonFocusNode;
+  final Color? backgroundColor;
 
   const QuantitySelector({
     super.key,
@@ -14,6 +16,7 @@ class QuantitySelector extends StatelessWidget {
     required this.onDecrement,
     required this.plusButtonFocusNode,
     required this.minusButtonFocusNode,
+    this.backgroundColor
   });
 
   @override
@@ -25,10 +28,7 @@ class QuantitySelector extends StatelessWidget {
           width: 100,
           height: 38,
           decoration: BoxDecoration(
-            color: Color.alphaBlend(
-              Colors.white.withOpacity(0.5),
-              Theme.of(context).colorScheme.primary,
-            ),
+            color: backgroundColor ?? AppColors.grey_10,
             borderRadius: BorderRadius.circular(38),
           ),
         ),
@@ -124,14 +124,12 @@ class _AnimatedQtyButtonState extends State<_AnimatedQtyButton> {
           height: _isFocused ? 36 : 28,
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: _isFocused ? Theme.of(context).colorScheme.secondary.withValues(alpha: 0.2) : Colors.grey,
+            color: Theme.of(context).colorScheme.primary,
             shape: BoxShape.circle,
           ),
           child: Icon(
             widget.icon,
-            color: _isFocused
-                ? Theme.of(context).colorScheme.secondary
-                : Colors.black,
+            color: Theme.of(context).colorScheme.onPrimary,
             size: _isFocused ? 26 : 18,
           ),
         ),

@@ -80,21 +80,9 @@ class _CartButtonState extends ConsumerState<CartButton> {
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               decoration: BoxDecoration(
                 color: cartFocused
-                    ? Theme.of(context).primaryColor
-                    : Colors.grey[800],
+                    ? Theme.of(context).colorScheme.primary
+                    : Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(26),
-                boxShadow: cartFocused
-                    ? [
-                        BoxShadow(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .secondary
-                              .withValues(alpha: 0.5),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        )
-                      ]
-                    : [],
               ),
               child: SizedBox(
                 height: 26,
@@ -108,8 +96,8 @@ class _CartButtonState extends ConsumerState<CartButton> {
                       fit: BoxFit.cover,
                       colorFilter: ColorFilter.mode(
                         cartFocused
-                            ? Theme.of(context).colorScheme.secondary
-                            : Colors.white,
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSecondary,
                         BlendMode.srcIn,
                       ),
                     ),
@@ -117,8 +105,8 @@ class _CartButtonState extends ConsumerState<CartButton> {
                     AnimatedDefaultTextStyle(
                       style: TextStyle(
                         color: cartFocused
-                            ? Theme.of(context).colorScheme.secondary
-                            : Colors.white,
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSecondary,
                         fontWeight:
                             cartFocused ? FontWeight.bold : FontWeight.normal,
                       ),

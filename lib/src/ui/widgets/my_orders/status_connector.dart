@@ -16,8 +16,8 @@ class StatusConnector extends StatelessWidget {
         dashLength: 4,
         dashGapLength: 3,
         dashColor: active
-            ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
-            : Colors.white38,
+            ? Theme.of(context).colorScheme.primary
+            : Theme.of(context).colorScheme.secondary,
       ),
     );
   }

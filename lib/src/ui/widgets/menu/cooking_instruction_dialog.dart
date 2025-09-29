@@ -167,7 +167,7 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                         borderSide: BorderSide(
                           color: textFieldFocus.hasFocus
                               ? Theme.of(context).colorScheme.primary
-                              : Colors.white24,
+                              : Theme.of(context).colorScheme.secondary,
                           width: 1,
                         ),
                       ),
@@ -193,8 +193,9 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                             widget.onCancel();
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                            hasFocus ? Theme.of(context).colorScheme.primary : Colors.grey[800],
+                            backgroundColor: hasFocus
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.secondary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -206,7 +207,9 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                           child: Text(
                             "Cancel",
                             style: TextStyle(
-                              color: hasFocus ? Colors.black : Colors.white,
+                              color: hasFocus
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.onSecondary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -228,8 +231,9 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                             widget.onSave(currentText);
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                            hasFocus ? Theme.of(context).colorScheme.primary : Colors.grey[800],
+                            backgroundColor: hasFocus
+                                ? Theme.of(context).colorScheme.primary
+                                : Theme.of(context).colorScheme.secondary,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30),
                             ),
@@ -241,7 +245,9 @@ class _CookingInstructionDialogState extends State<CookingInstructionDialog> {
                           child: Text(
                             "Save Instructions",
                             style: TextStyle(
-                              color: hasFocus ? Colors.black : Colors.white,
+                              color: hasFocus
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.onSecondary,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

@@ -27,22 +27,16 @@ class BaseScreen extends ConsumerWidget {
         children: [
           Positioned.fill(
             child: Container(
-              color: Colors.black, // Black background as fallback
+              color: Colors.black,
               child: bgImage != null
                   ? Image(
-                image: bgImage,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Image.asset(
-                    'jio_ird/assets/images/bg.png',
-                    fit: BoxFit.cover,
-                  );
-                },
-              )
-                  : Image.asset(
-                'jio_ird/assets/images/bg.png',
-                fit: BoxFit.cover,
-              ),
+                      image: bgImage,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const SizedBox.shrink();
+                      },
+                    )
+                  : const SizedBox.shrink(),
             ),
           ),
 

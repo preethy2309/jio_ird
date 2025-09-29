@@ -23,27 +23,20 @@ class _ProfileIconState extends ConsumerState<ProfileIcon> {
           height: 40,
           child: logo != null
               ? Image(
-            image: logo,
-            fit: BoxFit.fitHeight,
-            frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
-              if (wasSynchronouslyLoaded || frame != null) {
-                return child;
-              }
-              return _buildShimmer();
-            },
-            errorBuilder: (context, error, stackTrace) {
-              return Image.asset(
-                'jio_ird/assets/images/hotel_logo.png',
-                height: 40,
-                fit: BoxFit.fitHeight,
-              );
-            },
-          )
-              : Image.asset(
-            'jio_ird/assets/images/hotel_logo.png',
-            height: 40,
-            fit: BoxFit.fitHeight,
-          ),
+                  image: logo,
+                  fit: BoxFit.fitHeight,
+                  frameBuilder:
+                      (context, child, frame, wasSynchronouslyLoaded) {
+                    if (wasSynchronouslyLoaded || frame != null) {
+                      return child;
+                    }
+                    return _buildShimmer();
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return const SizedBox.shrink();
+                  },
+                )
+              : const SizedBox.shrink(),
         ),
       ),
     );

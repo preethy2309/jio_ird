@@ -37,6 +37,26 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
     final showSubCategories = ref.watch(showSubCategoriesProvider);
     final menuTitle = ref.watch(menuTitleProvider);
 
+    ref.listen<bool>(vegOnlyProvider, (previous, next) {
+      if (previous != next) {
+        ref.read(selectedCategoryProvider.notifier).state = 0;
+        ref.read(selectedSubCategoryProvider.notifier).state = -1;
+        ref.read(focusedSubCategoryProvider.notifier).state = -1;
+        ref.read(selectedDishProvider.notifier).state = -1;
+        ref.read(focusedDishProvider.notifier).state = -1;
+        ref.read(showCategoriesProvider.notifier).state = true;
+        ref.read(showSubCategoriesProvider.notifier).state = true;
+        ref.read(isSubCategoryListFocusedProvider.notifier).state = false;
+        ref.read(isCategoryFocusedProvider.notifier).state = false;
+        ref.read(isDishFocusedProvider.notifier).state = false;
+
+        ref.invalidate(mealsProvider);
+
+        final index = ref.read(selectedCategoryProvider);
+        ref.read(categoryFocusNodeProvider(index)).requestFocus();
+      }
+    });
+
     if (categories.isEmpty) {
       return BaseScreen(
         title: menuTitle,
@@ -62,10 +82,10 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
                 ),
               ),
             ),
-            Spacer(),
-            SizedBox(
+            const Spacer(),
+            const SizedBox(
               width: 432,
-              child: Column(
+              child:  Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ShimmerLoader(height: 200, width: double.infinity),
@@ -127,8 +147,8 @@ class _MenuScreenState extends ConsumerState<MenuScreen> {
               margin: const EdgeInsets.only(right: 16),
               width: 36,
               height: 36,
-              decoration: const BoxDecoration(
-                color: Color(0x33FFFFFF),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
                 shape: BoxShape.circle,
               ),
               child: Padding(

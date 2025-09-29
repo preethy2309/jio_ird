@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/utils/colors.dart';
 
 import '../../../notifiers/cart_notifier.dart';
 import '../../../notifiers/order_notifier.dart';
@@ -29,7 +30,7 @@ class BillSummaryScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: AppColors.pillFillBg,
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -138,15 +139,15 @@ class BillSummaryScreen extends ConsumerWidget {
                       if (states.contains(WidgetState.focused)) {
                         return Theme.of(context).colorScheme.primary;
                       }
-                      return Colors.white;
+                      return Theme.of(context).colorScheme.secondary;
                     },
                   ),
                   foregroundColor: WidgetStateProperty.resolveWith<Color>(
                     (states) {
                       if (states.contains(WidgetState.focused)) {
-                        return Theme.of(context).colorScheme.secondary;
+                        return Theme.of(context).colorScheme.onPrimary;
                       }
-                      return Colors.black;
+                      return Theme.of(context).colorScheme.onSecondary;
                     },
                   ),
                   padding: WidgetStateProperty.all(
@@ -163,12 +164,12 @@ class BillSummaryScreen extends ConsumerWidget {
                     final orderState = ref.watch(orderNotifierProvider);
 
                     return orderState.when(
-                      loading: () => const SizedBox(
+                      loading: () => SizedBox(
                         width: 20,
                         height: 20,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                       data: (msg) {

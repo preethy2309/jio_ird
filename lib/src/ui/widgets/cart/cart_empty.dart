@@ -77,40 +77,42 @@ class _EmptyCartScreenState extends State<EmptyCartScreen> {
               }
               return KeyEventResult.ignored;
             },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 150),
-              decoration: BoxDecoration(
-                color: _isFocused
-                    ? Theme.of(context).colorScheme.primary
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(30),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/menu',
+                  (route) => false,
+                );
+              },
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                  (states) {
+                    if (states.contains(WidgetState.focused)) {
+                      return Theme.of(context).colorScheme.primary;
+                    }
+                    return Theme.of(context).colorScheme.secondary;
+                  },
+                ),
+                foregroundColor: WidgetStateProperty.resolveWith<Color>(
+                  (states) {
+                    if (states.contains(WidgetState.focused)) {
+                      return Theme.of(context).colorScheme.onPrimary;
+                    }
+                    return Theme.of(context).colorScheme.onSecondary;
+                  },
+                ),
+                padding: WidgetStateProperty.all(
+                  const EdgeInsets.symmetric(vertical: 14, horizontal: 32),
+                ),
+                shape: WidgetStateProperty.all(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                ),
               ),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.transparent,
-                  shadowColor: Colors.transparent,
-                  foregroundColor: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                ),
-                onPressed: () => {
-                  Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/menu',
-                    (route) => false, // removes everything from stack
-                  )
-                },
-                child:  Text(
-                  "Go To Menu",
-                  style: TextStyle(
-                      color: _isFocused
-                          ? Theme.of(context).colorScheme.onPrimary
-                          : Colors.black,
-                      fontSize: 16, fontWeight: FontWeight.w500
-                  ),
-                ),
+              child: const Text(
+                "Go To Menu",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
             ),
           ),

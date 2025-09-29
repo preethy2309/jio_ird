@@ -140,6 +140,7 @@ class DishDetail extends ConsumerWidget {
                 child: Focus(
                   onKeyEvent: (node, event) {
                     if (event is! KeyDownEvent) return KeyEventResult.ignored;
+
                     if (event.logicalKey == LogicalKeyboardKey.arrowLeft) {
                       if (ref.read(showCategoriesProvider)) {
                         final lastFocusedCategory =
@@ -147,7 +148,6 @@ class DishDetail extends ConsumerWidget {
                         final categoryIndex = (lastFocusedCategory >= 0)
                             ? lastFocusedCategory
                             : 0;
-
                         ref
                             .read(categoryFocusNodeProvider(categoryIndex))
                             .requestFocus();
@@ -158,24 +158,22 @@ class DishDetail extends ConsumerWidget {
                         final categoryIndex = (lastFocusedCategory >= 0)
                             ? lastFocusedCategory
                             : 0;
-
                         ref
                             .read(subCategoryFocusNodeProvider(categoryIndex))
                             .requestFocus();
                       } else {
                         final lastFocusedDish = ref.read(focusedDishProvider);
-                        int index = 0;
-                        if (lastFocusedDish >= 0) {
-                          index = lastFocusedDish;
-                        }
+                        int index = lastFocusedDish >= 0 ? lastFocusedDish : 0;
                         ref.read(dishFocusNodeProvider(index)).requestFocus();
                       }
                       return KeyEventResult.handled;
                     }
 
-                    if (event.logicalKey == LogicalKeyboardKey.arrowDown) {
+                    if (event.logicalKey == LogicalKeyboardKey.arrowDown ||
+                        event.logicalKey == LogicalKeyboardKey.arrowRight) {
                       return KeyEventResult.handled;
                     }
+
                     return KeyEventResult.ignored;
                   },
                   child: ElevatedButton(
@@ -187,7 +185,7 @@ class DishDetail extends ConsumerWidget {
                         builder: (context) {
                           return CookingInstructionDialog(
                             dishName: dish!.name,
-                            initialText:  dish!.cookingRequest ?? '',
+                            initialText: dish!.cookingRequest ?? '',
                             onSave: (text) {
                               ref
                                   .read(itemQuantitiesProvider.notifier)
@@ -197,29 +195,21 @@ class DishDetail extends ConsumerWidget {
                                   .updateDishCookingInstruction(dish!.id, text);
                               Navigator.of(context).pop();
                             },
-                            onCancel: () {
-                              Navigator.of(context).pop();
-                            },
+                            onCancel: () => Navigator.of(context).pop(),
                           );
                         },
                       );
                     },
                     style: ButtonStyle(
                       backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                        (states) {
-                          if (states.contains(WidgetState.focused)) {
-                            return Theme.of(context).colorScheme.primary;
-                          }
-                          return Colors.white70;
-                        },
+                        (states) => states.contains(WidgetState.focused)
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.secondary,
                       ),
                       foregroundColor: WidgetStateProperty.resolveWith<Color>(
-                        (states) {
-                          if (states.contains(WidgetState.focused)) {
-                            return Theme.of(context).colorScheme.onPrimary;
-                          }
-                          return Colors.black;
-                        },
+                        (states) => states.contains(WidgetState.focused)
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.onSecondary,
                       ),
                       shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(

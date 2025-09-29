@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:jio_ird/src/utils/colors.dart';
 
 import '../../../providers/focus_provider.dart';
 import '../../../providers/state_provider.dart';
@@ -32,8 +33,8 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
-        border: Border.all(color: Colors.grey.shade800, width: 1.5),
+        color: AppColors.pillFillBg,
+        border: Border.all(color: AppColors.pillStroke, width: 1.5),
         borderRadius: BorderRadius.circular(30),
       ),
       child: Row(
@@ -120,8 +121,8 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             decoration: BoxDecoration(
               color: hasFocus
-                  ? Theme.of(context).colorScheme.secondary
-                  : (isSelected ? Colors.white70 : Colors.transparent),
+                  ? Theme.of(context).colorScheme.primary
+                  : (isSelected ? Theme.of(context).colorScheme.secondary : Colors.transparent),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Text(
@@ -129,7 +130,7 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
               style: TextStyle(
                 color: hasFocus
                     ? Theme.of(context).colorScheme.onPrimary
-                    : Theme.of(context).colorScheme.onSecondary,
+                    : (isSelected ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onPrimary),
                 fontSize: 16,
                 fontWeight: (isSelected || hasFocus)
                     ? FontWeight.bold

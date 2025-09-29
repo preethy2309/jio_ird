@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jio_ird/src/utils/colors.dart';
 
 import '../quantity_selector.dart';
 
@@ -43,7 +44,7 @@ class CartItemTile extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: AppColors.pillFillBg,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -95,6 +96,7 @@ class CartItemTile extends StatelessWidget {
                       onDecrement: onDecrement,
                       plusButtonFocusNode: plusFocusNode,
                       minusButtonFocusNode: minusFocusNode,
+                      backgroundColor: AppColors.pillStroke,
                     ),
                   ],
                 )
@@ -131,6 +133,7 @@ class CartItemTile extends StatelessWidget {
                       onDecrement: onDecrement,
                       plusButtonFocusNode: plusFocusNode,
                       minusButtonFocusNode: minusFocusNode,
+                      backgroundColor: AppColors.pillStroke,
                     ),
                   ],
                 ),
@@ -167,15 +170,15 @@ class CartItemTile extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: hasFocus
                             ? Theme.of(context).primaryColor
-                            : Colors.grey.shade700,
+                            : Theme.of(context).colorScheme.secondary,
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
                         cookingInstructions.isEmpty ? "Add" : "Edit",
                         style: TextStyle(
                             color: hasFocus
-                                ? Theme.of(context).colorScheme.secondary
-                                : Colors.white,
+                                ? Theme.of(context).colorScheme.onPrimary
+                                : Theme.of(context).colorScheme.onSecondary,
                             fontSize: 13),
                       ),
                     ),

@@ -20,8 +20,8 @@ class StatusStep extends StatelessWidget {
           icon,
           size: 20,
           color: active
-              ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
-              : Colors.white38,
+              ? Theme.of(context).colorScheme.primary
+              : Theme.of(context).colorScheme.secondary,
         ),
         const SizedBox(height: 4),
         Text(
@@ -29,8 +29,8 @@ class StatusStep extends StatelessWidget {
           style: TextStyle(
             fontSize: 12,
             color: active
-                ? Theme.of(context).colorScheme.primary.withOpacity(0.5)
-                : Colors.white38,
+                ? Theme.of(context).colorScheme.primary
+                : Theme.of(context).colorScheme.secondary,
           ),
         ),
       ],
