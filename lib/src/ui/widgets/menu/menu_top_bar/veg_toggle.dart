@@ -91,7 +91,7 @@ class _VegToggleState extends ConsumerState<VegToggle> {
                   'Veg Only',
                   style: TextStyle(
                     color: toggleFocused
-                        ? Theme.of(context).colorScheme.secondary
+                        ? Theme.of(context).colorScheme.onPrimary
                         : Colors.white,
                   ),
                 ),
@@ -100,8 +100,18 @@ class _VegToggleState extends ConsumerState<VegToggle> {
                   width: 46,
                   height: 26,
                   child: Switch(
-                    activeThumbColor: Theme.of(context).colorScheme.secondary,
-                    inactiveTrackColor: Colors.grey[800],
+                    activeThumbColor: !toggleFocused
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSecondary,
+                    activeTrackColor: toggleFocused
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSecondary,
+                    inactiveTrackColor: !toggleFocused
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSecondary,
+                    inactiveThumbColor: toggleFocused
+                        ? Theme.of(context).colorScheme.onPrimary
+                        : Theme.of(context).colorScheme.onSecondary,
                     autofocus: true,
                     value: vegOnly,
                     onChanged: (value) =>

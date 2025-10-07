@@ -33,7 +33,7 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: AppColors.pillFillBg,
+        color: Theme.of(context).colorScheme.secondary,
         border: Border.all(color: AppColors.pillStroke, width: 1.5),
         borderRadius: BorderRadius.circular(30),
       ),
@@ -122,7 +122,7 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
             decoration: BoxDecoration(
               color: hasFocus
                   ? Theme.of(context).colorScheme.primary
-                  : (isSelected ? Theme.of(context).colorScheme.secondary : Colors.transparent),
+                  : (isSelected ? Theme.of(context).colorScheme.primary.withOpacity(0.5) : Colors.transparent),
               borderRadius: BorderRadius.circular(50),
             ),
             child: Text(
@@ -130,7 +130,7 @@ class _TabSwitcherState extends ConsumerState<TabSwitcher> {
               style: TextStyle(
                 color: hasFocus
                     ? Theme.of(context).colorScheme.onPrimary
-                    : (isSelected ? Theme.of(context).colorScheme.onSecondary : Theme.of(context).colorScheme.onPrimary),
+                    : Theme.of(context).colorScheme.onSecondary,
                 fontSize: 16,
                 fontWeight: (isSelected || hasFocus)
                     ? FontWeight.bold
