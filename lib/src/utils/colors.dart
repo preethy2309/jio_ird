@@ -4,4 +4,5 @@ class AppColors {
   static const Color grey_10 = Color(0x1A141414);
   static const Color pillFillBg = Color(0xFF2B2B2B);
   static const Color pillStroke = Color(0xFF5D5D5E);
+  static const Color imageBackground = Color(0xFFA1A1A1);
 }

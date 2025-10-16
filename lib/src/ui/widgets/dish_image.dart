@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jio_ird/src/utils/colors.dart';
 import 'shimmer_loader.dart';
 
 class DishImage extends StatelessWidget {
@@ -56,13 +57,18 @@ class DishImage extends StatelessWidget {
   Widget _buildFallback() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      child: SvgPicture.asset(
-        fallbackAsset,
-        alignment: AlignmentGeometry.center,
-        width: width,
-        height: height,
-        fit: fit,
-      ),
+        child: Container(
+          width: width,
+          height: height,
+          color: AppColors.imageBackground,
+          alignment: Alignment.center,
+          child: SvgPicture.asset(
+            fallbackAsset,
+            width: width,
+            height: height,
+            fit: fit,
+          ),
+        ),
     );
   }
 }

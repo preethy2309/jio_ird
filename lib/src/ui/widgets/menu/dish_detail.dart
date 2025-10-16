@@ -49,8 +49,8 @@ class DishDetail extends ConsumerWidget {
               width: double.infinity,
               height: 220,
               borderRadius: 16,
-              fallbackWidth: 120,
-              fallbackHeight: 120,
+              fallbackWidth: 150,
+              fallbackHeight: 150,
             ),
             const SizedBox(height: 8),
             Text(
@@ -83,8 +83,8 @@ class DishDetail extends ConsumerWidget {
             width: double.infinity,
             height: 220,
             borderRadius: 16,
-            fallbackWidth: 120,
-            fallbackHeight: 120,
+            fallbackWidth: 150,
+            fallbackHeight: 150,
           ),
           const SizedBox(height: 4),
           Row(
