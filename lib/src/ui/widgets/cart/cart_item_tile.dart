@@ -90,13 +90,16 @@ class CartItemTile extends StatelessWidget {
                         ),
                       ],
                     ),
-                    QuantitySelector(
-                      quantity: quantity,
-                      onIncrement: onIncrement,
-                      onDecrement: onDecrement,
-                      plusButtonFocusNode: plusFocusNode,
-                      minusButtonFocusNode: minusFocusNode,
-                      backgroundColor: AppColors.pillStroke,
+                    Align(
+                      alignment: Alignment.center,
+                      child: QuantitySelector(
+                        quantity: quantity,
+                        onIncrement: onIncrement,
+                        onDecrement: onDecrement,
+                        plusButtonFocusNode: plusFocusNode,
+                        minusButtonFocusNode: minusFocusNode,
+                        backgroundColor: AppColors.pillStroke,
+                      ),
                     ),
                   ],
                 )
@@ -127,13 +130,16 @@ class CartItemTile extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    QuantitySelector(
-                      quantity: quantity,
-                      onIncrement: onIncrement,
-                      onDecrement: onDecrement,
-                      plusButtonFocusNode: plusFocusNode,
-                      minusButtonFocusNode: minusFocusNode,
-                      backgroundColor: AppColors.pillStroke,
+                    Align(
+                      alignment: Alignment.center,
+                      child: QuantitySelector(
+                        quantity: quantity,
+                        onIncrement: onIncrement,
+                        onDecrement: onDecrement,
+                        plusButtonFocusNode: plusFocusNode,
+                        minusButtonFocusNode: minusFocusNode,
+                        backgroundColor: AppColors.pillStroke,
+                      ),
                     ),
                   ],
                 ),

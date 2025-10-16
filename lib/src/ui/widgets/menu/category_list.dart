@@ -92,6 +92,7 @@ class _CategoryListState extends ConsumerState<CategoryList> {
                 focusedIndex = hasFocus ? index : focusedIndex;
               });
               if (hasFocus) {
+                ref.read(isDishFocusedProvider.notifier).state = false;
                 ref.read(isSubCategoryListFocusedProvider.notifier).state = false;
                 ref.read(selectedCategoryProvider.notifier).state = index;
                 ref.read(focusedSubCategoryProvider.notifier).state = -1;

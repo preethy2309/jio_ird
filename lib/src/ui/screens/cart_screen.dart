@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../notifiers/cart_notifier.dart';
 import '../../providers/focus_provider.dart';
@@ -30,6 +31,17 @@ class CartScreen extends ConsumerWidget {
       infoTabFocusNode.requestFocus();
       ref.read(orderPlacedProvider.notifier).state = false;
     }
+
+    ref.listen<bool>(orderPlacedProvider, (previous, next) {
+      if (next == true) {
+        Fluttertoast.showToast(
+          msg: "Order placed successfully!",
+          toastLength: Toast.LENGTH_SHORT,
+          backgroundColor: Colors.white,
+          textColor: Colors.black,
+        );
+      }
+    });
 
     return BaseScreen(
       title: "Cart",

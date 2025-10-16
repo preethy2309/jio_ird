@@ -15,6 +15,7 @@ class JioIRDScreen extends StatelessWidget {
   final Widget? bottomBar;
   final String? backgroundImage;
   final String? hotelLogo;
+  final bool? orderAllowed;
 
   const JioIRDScreen({
     super.key,
@@ -23,6 +24,7 @@ class JioIRDScreen extends StatelessWidget {
     required this.accessToken,
     required this.serialNumber,
     required this.guestInfo,
+    this.orderAllowed = true,
     this.menuTitle = "In Room Dining",
     this.bottomBar,
     this.backgroundImage,
@@ -42,6 +44,7 @@ class JioIRDScreen extends StatelessWidget {
         bottomBarProvider.overrideWithValue(bottomBar),
         backgroundImageRawProvider.overrideWithValue(backgroundImage),
         hotelLogoRawProvider.overrideWithValue(hotelLogo),
+        orderAllowedProvider.overrideWithValue(orderAllowed),
       ],
       child: const JioIRDModule(),
     );

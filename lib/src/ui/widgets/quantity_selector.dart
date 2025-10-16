@@ -50,7 +50,7 @@ class QuantitySelector extends StatelessWidget {
                     duration: const Duration(milliseconds: 150),
                     style: TextStyle(
                       fontSize: 16,
-                      color: Theme.of(context).colorScheme.secondary,
+                      color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                     child: Text(

@@ -56,17 +56,12 @@ class DishImage extends StatelessWidget {
   Widget _buildFallback() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
-      child: Container(
+      child: SvgPicture.asset(
+        fallbackAsset,
+        alignment: AlignmentGeometry.center,
         width: width,
         height: height,
-        color: Colors.transparent,
-        alignment: Alignment.center,
-        child: SvgPicture.asset(
-          fallbackAsset,
-          width: fallbackWidth,
-          height: fallbackHeight,
-          fit: BoxFit.contain,
-        ),
+        fit: fit,
       ),
     );
   }

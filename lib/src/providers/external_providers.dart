@@ -30,6 +30,10 @@ final bottomBarProvider = Provider<Widget?>((ref) {
   return const BottomLayout();
 });
 
+final orderAllowedProvider = Provider<bool?>((ref) {
+  return true;
+});
+
 
 ImageProvider? _resolveImage(String? pathOrUrl) {
   if (pathOrUrl == null) return null;

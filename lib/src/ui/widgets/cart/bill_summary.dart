@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:jio_ird/src/providers/external_providers.dart';
 import 'package:jio_ird/src/utils/colors.dart';
 
 import '../../../notifiers/cart_notifier.dart';
@@ -131,7 +133,16 @@ class BillSummaryScreen extends ConsumerWidget {
               child: ElevatedButton(
                 focusNode: placeOrderFocusNode,
                 onPressed: () {
-                  ref.read(orderNotifierProvider.notifier).placeOrder(items);
+                  if(ref.read(orderAllowedProvider) == true) {
+                    ref.read(orderNotifierProvider.notifier).placeOrder(items);
+                  } else {
+                    Fluttertoast.showToast(
+                      msg: "Order is not allowed!",
+                      toastLength: Toast.LENGTH_SHORT,
+                      backgroundColor: Colors.white,
+                      textColor: Colors.black,
+                    );
+                  }
                 },
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(

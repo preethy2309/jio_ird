@@ -224,8 +224,8 @@ class _DishListState extends ConsumerState<DishList> {
                     width: 75,
                     height: 75,
                     borderRadius: 6,
-                    fallbackWidth: 45,
-                    fallbackHeight: 45,
+                    fallbackWidth: 75,
+                    fallbackHeight: 75,
                   ),
                   const SizedBox(width: 10),
                   if (isFocused) ...[

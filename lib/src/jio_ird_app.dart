@@ -46,17 +46,22 @@ class JioIRDModule extends ConsumerWidget {
         onWillPop: () async {
           final isMenuScreen = ref.read(currentRouteProvider) == '/menu';
           if (isMenuScreen) {
+            debugPrint("Preethy : 11 ${ref.read(isDishFocusedProvider)}  ${ref.read(isSubCategoryListFocusedProvider)} ${ref.read(isCategoryFocusedProvider)}");
             if (ref.read(isDishFocusedProvider)) {
+              debugPrint("Preethy : 22");
               if (hasSubCategories(ref)) {
+                debugPrint("Preethy : 33");
                 ref.read(showSubCategoriesProvider.notifier).state = true;
                 ref.read(focusedDishProvider.notifier).state = -1;
               } else {
+                debugPrint("Preethy : 44");
                 ref.read(showCategoriesProvider.notifier).state = true;
               }
               return false;
             }
 
             if (ref.read(isSubCategoryListFocusedProvider)) {
+              debugPrint("Preethy : 55");
               ref.read(showCategoriesProvider.notifier).state = true;
               ref.read(selectedSubCategoryProvider.notifier).state = -1;
               ref.read(isCategoryFocusedProvider.notifier).state = true;
@@ -66,16 +71,18 @@ class JioIRDModule extends ConsumerWidget {
             if (ref.read(isCategoryFocusedProvider) ||
                 ref.read(vegToggleFocusNodeProvider).hasFocus ||
                 ref.read(goToCartFocusNodeProvider).hasFocus) {
+              debugPrint("Preethy : 66");
               Navigator.of(context).pop();
               return true;
             }
           }
 
           if (moduleNavigatorKey.currentState?.canPop() ?? false) {
+            debugPrint("Preethy : 77");
             moduleNavigatorKey.currentState!.pop();
             return false;
           }
-
+          debugPrint("Preethy : 88");
           return true;
         },
         child: Navigator(
