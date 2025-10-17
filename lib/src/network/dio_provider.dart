@@ -19,11 +19,10 @@ final dioProvider = Provider<Dio>((ref) {
   ));
 
   final Map<String, int> retryCounts = {};
-
+  final token = ref.read(accessTokenProvider);
   dio.interceptors.add(
     InterceptorsWrapper(
       onRequest: (options, handler) async {
-        final token = ref.read(accessTokenProvider);
         options.headers['Authorization'] = token;
         debugPrint("Headers: ${options.headers}");
         return handler.next(options);
