@@ -64,9 +64,9 @@ class DishImage extends StatelessWidget {
           alignment: Alignment.center,
           child: SvgPicture.asset(
             fallbackAsset,
-            width: width,
-            height: height,
-            fit: fit,
+            width: fallbackWidth,
+            height: fallbackHeight,
+            fit: BoxFit.contain,
           ),
         ),
     );
